@@ -1,0 +1,49 @@
+{
+    "File": {
+        "Project": { "New Project": "new_project", "Open Project": "open_project", "Save Project": "save_project", "Save_As Project": "save_as_project" },
+        "---1": "separator",
+        "Import": { "stl": "import_stl", "ply": "import_ply", "obj": "import_obj", "dxf": "import_dxf", "acri": "import_acri", "vtk": "import_vtk" },
+        "Export": { "stl": "export_stl", "ply": "export_ply", "obj": "export_obj", "dxf": "export_dxf", "acri": "export_acri", "vtk": "export_vtk" },
+        "---2": "separator",
+        "Save": "save", "Save_As": "save_as",
+        "---3": "separator",
+        "Print": "print_view", "ScreenShot": "screenshot",
+        "---4": "separator",
+        "Exit": "exit_app"
+    },
+    "Edit": { "Undo": "undo", "Redo": "redo", "---1": "separator", "Move/Translate": "move", "Scale": "scale", "Rotate": "rotate", "Mirror": "mirror", "---2": "separator", "Transform": { "Linear": "transform_linear", "Rotate": "transform_rotate" }, "---3": "separator", "Delete": "delete_object" },
+    "View": { "Geometrical_views": { "Top View": "view_top", "Bottom View": "view_bottom", "Front View": "view_front", "Back View": "view_back", "Left View": "view_left", "Right View": "view_right", "Isometric View": "view_iso" }, "---1": "separator", "Custom_views": { "Create_Custom_View": "create_custom_view", "Load_View": "load_view", "Reset View": "reset_view" }, "---2": "separator", "Projection": { "Perspective Projection": "proj_persp", "Orthogonal Projection": "proj_ortho" }, "---3": "separator", "Focus": { "Focus Visible": "focus_visible", "Focus Selected": "focus_selected" }, "---4": "separator", "Mesh_entities": { "Vertices": "view_verts", "Edges": "view_edges", "Faces": "view_faces" }, "---5": "separator", "Mesh_view": { "Surfaces": "view_surf", "Surfaces_with_edges": "view_surf_edge", "Wireframe": "view_wire" } },
+    "Plane": {
+        "Define from Input": "plane_from_input",
+        "Define from Surface": "plane_from_surface",
+        "---1": "separator",
+        "Local Coordinate System": "plane_from_lcs",
+        "---2": "separator",
+        "Reset to XY": "plane_reset_xy"
+    },
+    "2D": { "Create 2D": { "Point": "create_point", "Line": "create_line", "Circle": "create_circle", "Triangle": "create_triangle" }, "---1": "separator", "Sketch-2D": { "Arc": "sketch_arc", "Curve": "sketch_curve", "2D_polyline": "sketch_polyline" } },
+    "3D": {
+        "Solids": { 
+            "Cube": "create_cube",
+            "Sphere": "create_sphere",
+            "Cylinder": "create_cylinder",
+            "Cone": "create_cone",
+            "Cuboid": "create_solid_cuboid"  },
+        "---1": "separator",
+        "Coordinate Systems": {
+			"Create Local CS...": "create_lcs",
+            "Create Vector": "create_vector"},
+        "---2": "separator",
+        "Advance_templates": { "Pipes": "template_pipes", "Swirler": "template_swirler", "Airfoil": "template_airfoil" },
+        "---3": "separator",
+        "Advanced Shapes": { "Extrude": "shape_extrude", "Revolve": "shape_revolve", "Sweep": "shape_sweep", "Loft": "shape_loft" }
+    },
+    "Topology": { "Create_2D": "topo_create_2d", "Create_3D": "topo_create_3d", "---1": "separator", "Insert": "topo_insert", "Delete": "topo_delete", "merge": { "Vertices": "topo_merge_verts", "Lines": "topo_merge_lines" }, "Map_topology_to_geo": "topo_map" },
+    "Modify": { "Boolean": { "Union": "bool_union", "Intersection": "bool_intersect", "Difference": "bool_diff" } },
+    "Tools": { "Measure": { "Objects": { "point_to_point": "measure_p2p", "Edge_to_Edge": "measure_e2e", "Face_to_face": "measure_f2f" }, "---1": "separator", "On-Selection": { "Line": "measure_line", "Area": "measure_area", "Angle": "measure_angle" } }, "---1": "separator", "ScreenShot": "screenshot_tool" },
+    "Plugin": { "Create plugin": "plugin_create", "Edit Plugin": "plugin_edit", "Delete Plugin": "plugin_delete", "Sample Plugin": "plugin_sample" },
+    "Macro": { "New": "macro_new", "Open": "macro_open", "Save": "macro_save", "Save_As": "macro_save_as", "Delete": "macro_delete" },
+    "Configure": { "Global Settings": "conf_global", "Color_pallete": "conf_colors", "Remote Connections": "conf_remote", "Cloud Settings": "conf_cloud", "Look and Feel": "conf_laf", "Auto Save Settings": "conf_autosave", "Script Settings": "conf_script", "Object Tree Settings": "conf_tree", "Undo/Redo": "conf_undo", "ML Model Settings": "conf_ml", "Logging Configurations": "conf_logging" },
+    "Panels": { "Command Window": "panel_command", "Object Window": "panel_object", "Error Window": "panel_error", "Python Console": "panel_python", "Status Window": "panel_status" },
+    "Help": { "Index": "help_index", "Search": "help_search", "Plugin": "help_plugin", "About": "help_about" }
+}

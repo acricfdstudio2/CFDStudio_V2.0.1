@@ -1,0 +1,262 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "documentation_version": "1.0",
+  "project_name": "ACRI-CAD",
+  "description": "Comprehensive documentation of core GUI modules and their functions.",
+  "modules": [
+    {
+      "file_path": "app/GUI/commands.py",
+      "description": "Implements the Command Pattern for undo/redo functionality. Each class represents an atomic, reversible user action.",
+      "classes": [
+        {
+          "name": "ImportDxfCommand",
+          "methods": [
+            {
+              "name": "execute",
+              "type": "Method",
+              "parameters": [],
+              "core_concept": "Executes the DXF import process, creating and transforming all geometry actors.",
+              "expected_behaviour": "If executing for the first time, it reads the DXF file, creates a top-level group in the Object Browser, and then generates VTK actors for each supported shape (LINE, CIRCLE, LWPOLYLINE). Each actor's position is translated by the specified origin. If it is a 'redo' operation, it re-adds the previously created actors to the scene. It logs warnings if no supported geometry is found.",
+              "return_value": {
+                "type": "None",
+                "description": "This method modifies the application state directly."
+              }
+            },
+            {
+              "name": "undo",
+              "type": "Method",
+              "parameters": [],
+              "core_concept": "Reverses the DXF import operation completely.",
+              "expected_behaviour": "Removes all created geometry actors from the VTK renderer and the application's internal actor buffer. It also removes the entire group and its children from the Object Browser.",
+              "return_value": {
+                "type": "None",
+                "description": "This method modifies the application state directly."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file_path": "app/GUI/dialogs.py",
+      "description": "Contains all custom PyQt dialogs and reusable widgets for user input.",
+      "classes": [
+        {
+          "name": "PointSelectionWidget",
+          "methods": [
+            {
+              "name": "get_point",
+              "type": "Method",
+              "parameters": [],
+              "core_concept": "Retrieves the 3D coordinate from the UI input fields.",
+              "expected_behaviour": "Reads the text from the X, Y, and Z QLineEdit widgets and attempts to convert them to floating-point numbers.",
+              "return_value": {
+                "type": "list[float] | None",
+                "description": "A list containing [x, y, z] coordinates if the input is valid, otherwise None."
+              }
+            },
+            {
+              "name": "set_point",
+              "type": "Method",
+              "parameters": [
+                {
+                  "name": "point",
+                  "type": "list[float]",
+                  "description": "A list containing the [x, y, z] coordinates to display."
+                }
+              ],
+              "core_concept": "Programmatically updates the coordinate values in the UI.",
+              "expected_behaviour": "Sets the text of the X, Y, and Z QLineEdit widgets to the formatted values from the input list. This is typically called after a point is picked from the 3D screen.",
+              "return_value": {
+                "type": "None",
+                "description": "This method modifies the UI state."
+              }
+            }
+          ]
+        },
+        {
+          "name": "DxfImportDialog",
+          "methods": [
+            {
+              "name": "_browse_for_file",
+              "type": "Method",
+              "parameters": [],
+              "core_concept": "Handles the file browsing button click event.",
+              "expected_behaviour": "Opens a native QFileDialog, filtered for .dxf files. If the user selects a file, its path is displayed in the dialog's path_edit widget.",
+              "return_value": {
+                "type": "None",
+                "description": "This method modifies the UI state."
+              }
+            },
+            {
+              "name": "on_accept",
+              "type": "Method",
+              "parameters": [],
+              "core_concept": "Validates all user inputs and packages them for the main application.",
+              "expected_behaviour": "Checks if a file path has been selected and if the origin coordinates are valid. It retrieves the plane selection choice. If all inputs are valid, it stores them in a dictionary in `self.result_data` and closes the dialog with an 'Accepted' status. If validation fails, it shows a critical error message box.",
+              "return_value": {
+                "type": "None",
+                "description": "This method modifies the dialog's internal state and result."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file_path": "app/GUI/interaction.py",
+      "description": "Defines the custom VTK interactor style for handling all user interaction in the 3D viewport.",
+      "classes": [
+        {
+          "name": "CustomInteractorStyle",
+          "methods": [
+            {
+              "name": "set_mode",
+              "type": "Method",
+              "parameters": [
+                {
+                  "name": "mode",
+                  "type": "str",
+                  "description": "The new interaction mode (e.g., 'navigation', 'point_selection')."
+                }
+              ],
+              "core_concept": "Manages the state of the 3D viewport's interaction behavior.",
+              "expected_behaviour": "Switches the internal `self.mode` state. It ensures that any visual aids from other modes (like highlighting actors) are cleaned up before entering the new mode.",
+              "return_value": {
+                "type": "None",
+                "description": "This method modifies the interactor's state."
+              }
+            },
+            {
+              "name": "start_point_picking",
+              "type": "Method",
+              "parameters": [],
+              "core_concept": "Initiates the interactive point selection mode.",
+              "expected_behaviour": "Sets the mode to 'point_selection'. It iterates through all visible actors in the scene, extracts all their vertices, and creates a single VTK actor of small glyphs to visualize all pickable points. It also prepares a separate actor for hover highlighting.",
+              "return_value": {
+                "type": "None",
+                "description": "This method modifies the interactor's state and the 3D scene."
+              }
+            },
+            {
+              "name": "_on_left_button_press",
+              "type": "Method",
+              "parameters": [
+                { "name": "obj", "type": "vtkObject", "description": "The VTK object that invoked the event." },
+                { "name": "event", "type": "str", "description": "The name of the event." }
+              ],
+              "core_concept": "Central event handler for left mouse clicks in the 3D viewport.",
+              "expected_behaviour": "Behavior depends on the current mode. If in 'point_selection', it finalizes the pick, calls the `main_window.on_point_picked` method with the coordinates, and reverts to 'navigation' mode. If in 'navigation', it performs standard object selection. It consumes the event for picking modes to prevent unwanted camera movement.",
+              "return_value": {
+                "type": "None",
+                "description": "This method handles user input and triggers state changes in the main application."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "file_path": "app/GUI/main_window.py",
+      "description": "The main application window, acting as the central controller for the entire GUI.",
+      "classes": [
+        {
+          "name": "MainWindow",
+          "methods": [
+            {
+              "name": "_create_dock_windows",
+              "type": "Method",
+              "parameters": [],
+              "core_concept": "Constructs and arranges the entire UI layout using Qt's dock widget system.",
+              "expected_behaviour": "Instantiates all panel widgets (Object Browser, Command Window, tabbed log panels, etc.). It then wraps them in QDockWidgets and arranges them into the final layout, including splitting the left panels and tabifying the bottom panels.",
+              "return_value": {
+                "type": "None",
+                "description": "This method builds the main UI structure."
+              }
+            },
+            {
+              "name": "route_log_message",
+              "type": "Method",
+              "parameters": [
+                {
+                  "name": "record",
+                  "type": "logging.LogRecord",
+                  "description": "The log record object emitted by the custom handler."
+                }
+              ],
+              "core_concept": "Acts as the central slot for routing log messages to the correct UI panel.",
+              "expected_behaviour": "Receives a log record from the `QtLogHandler`. Based on the record's level (e.g., INFO, WARNING, ERROR), it appends the formatted message to either the 'Status Window' or the 'Error Window'. If the message is an error or warning, it also calls `_notify_error_tab`.",
+              "return_value": {
+                "type": "None",
+                "description": "This method updates the content of the logging panels."
+              }
+            },
+            {
+              "name": "execute_command",
+              "type": "Method",
+              "parameters": [
+                {
+                  "name": "command",
+                  "type": "ICommand",
+                  "description": "An instance of a command class that inherits from ICommand."
+                }
+              ],
+              "core_concept": "Manages the application's state changes via the Command Pattern.",
+              "expected_behaviour": "Clears the 'redo' stack if necessary, executes the command, and adds the command to the 'undo' stack. It ensures the 3D view is re-rendered after a successful command execution.",
+              "return_value": {
+                "type": "None",
+                "description": "This is the primary method for modifying application state."
+              }
+            },
+            {
+              "name": "on_import_dxf",
+              "type": "Method",
+              "parameters": [],
+              "core_concept": "Orchestrates the entire DXF import user workflow.",
+              "expected_behaviour": "Creates and displays the `DxfImportDialog`. It connects the dialog's 'Pick from Screen' request to the `start_point_picking_mode` method. If the dialog is accepted, it retrieves the validated user data, resolves the plane context, and executes the `ImportDxfCommand`.",
+              "return_value": {
+                "type": "None",
+                "description": "This method initiates a major user workflow."
+              }
+            },
+            {
+              "name": "start_point_picking_mode",
+              "type": "Method",
+              "parameters": [
+                {
+                  "name": "target_widget",
+                  "type": "PointSelectionWidget",
+                  "description": "The specific UI widget that should receive the picked coordinate."
+                }
+              ],
+              "core_concept": "Acts as a bridge to activate the interactor's point picking mode.",
+              "expected_behaviour": "Stores a reference to the `target_widget` in a state variable (`self.point_pick_target_widget`) and then calls the `start_point_picking` method on the interactor style.",
+              "return_value": {
+                "type": "None",
+                "description": "This method changes the application's interaction state."
+              }
+            },
+            {
+              "name": "on_point_picked",
+              "type": "Method",
+              "parameters": [
+                {
+                  "name": "point",
+                  "type": "list[float]",
+                  "description": "The [x, y, z] coordinate picked from the 3D scene."
+                }
+              ],
+              "core_concept": "Handles the successful completion of a point picking operation.",
+              "expected_behaviour": "This method is called directly by the `CustomInteractorStyle` when a point is successfully picked. It checks if there is a `target_widget` waiting for the coordinate, and if so, it calls that widget's `set_point` method to update the UI. It then clears the target widget reference.",
+              "return_value": {
+                "type": "None",
+                "description": "This method finalizes the data flow from a 3D pick back to the UI."
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
